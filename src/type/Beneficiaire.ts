@@ -1,0 +1,33 @@
+import { Centre } from "./Centre";
+import { ClassificationCas } from "./ClassificationCas";
+import { Handicap } from "./Handicap";
+import { Mendicite } from "./Mendicite";
+import { Service } from "./Service";
+import { SituationDeRue } from "./SituationDeRue";
+import { SituationFamilial } from "./SituationFamilial";
+import { SituationFinanciere } from "./SituationFinanciere";
+import { SituationMedical } from "./SituationMedical";
+import { Violance } from "./Violance";
+
+export type Beneficiaire = {
+  id: number;
+  nom: string;
+  prenom: string;
+  sexe: string;
+  groupeAge: string;
+  scolarite: boolean;
+  niveauScolaire: string;
+  sejour: string;
+  territoire: string;
+  situationSocial: string;
+  centre: Centre;
+  classificationCas: ClassificationCas;
+  handicap: Handicap;
+  mendicite: Mendicite;
+  service: Service;
+  situationDeRue: SituationDeRue;
+  situationFamilial: SituationFamilial;
+  situationFinanciere: SituationFinanciere;
+  situationMedical: SituationMedical;
+  violance: Violance;
+};
