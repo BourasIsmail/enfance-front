@@ -28,6 +28,8 @@ export const BreadCrumb = () => {
         return "لائحة الحسابات";
       case "addCompte":
         return "إضافة الحسابات";
+      case "beneficiaires":
+        return "لائحة المستفيدين";
       default:
         return path;
     }
