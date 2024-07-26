@@ -62,7 +62,7 @@ export const columns: ColumnDef<Beneficiaire>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-right" align="end">
               <DropdownMenuLabel>الوظائف</DropdownMenuLabel>
-              <Link href={benef.id ? `/comptes/${benef.id}` : `#`}>
+              <Link href={benef.id ? `/beneficiaires/${benef.id}` : `#`}>
                 <DropdownMenuItem>تفاصيل المستفيد</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>

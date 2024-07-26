@@ -1,5 +1,6 @@
 import { getCookie } from "cookies-next";
 import { api } from ".";
+import { Beneficiaire } from "@/type/Beneficiaire";
 
 export function getBeneficiaires() {
   return async () => {
@@ -13,14 +14,16 @@ export function getBeneficiaires() {
   };
 }
 
-export function getBeneficiaire(id: number) {
-  return async () => {
+export async function getBeneficiaire(id: number) {
+  try {
     const token = getCookie("token");
-    const { data } = await api.get("/beneficiaires/" + id, {
+    const response = await api.get(`/beneficiaires/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-    return data;
-  };
+    return response.data as Beneficiaire;
+  } catch (error) {
+    console.log(error);
+  }
 }
