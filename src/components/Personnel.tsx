@@ -16,11 +16,34 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
 import { Beneficiaire } from "@/type/Beneficiaire";
+import { Region } from "@/type/Region";
+import { useQuery } from "react-query";
+import { getALLRegions } from "@/api/province";
+import { getProvinceByRegion } from "@/api/region";
+import { getCentre } from "@/api/centre";
 
 const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
   const [selectedValue, setselectedValue] =
     useState<Beneficiaire>(beneficiaires);
   const [open, setopen] = useState(false);
+
+  const [selectedRegion1, setselectedRegion1] = useState<Region>();
+
+  const { data: regions1 } = useQuery({
+    queryKey: ["regions1"],
+    queryFn: () => getALLRegions(),
+  });
+
+  const { data: provinces1 } = useQuery({
+    queryKey: ["provinces"],
+    queryFn: () => getProvinceByRegion(selectedRegion1?.id as number),
+    enabled: !!selectedRegion1?.id,
+  });
+
+  const { data: centre } = useQuery({
+    queryKey: ["centre"],
+    queryFn: () => getCentre(),
+  });
 
   const handleSubmit = (e: any) => {
     try {
@@ -95,24 +118,82 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
                 />
               </div>
               <div className="w-full">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  الإسم العائلي باللغة الفرنسية
-                </label>
-                <input
-                  type="text"
-                  name="nomFr"
-                  id=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.nomFr || ""}
-                  placeholder="الإسم العائلي باللغة الفرنسية"
-                  onChange={(e) =>
-                    setselectedValue({
-                      ...selectedValue,
-                      nomFr: e.target.value || "",
-                    })
-                  }
-                  required
-                />
+                <div className="relative z-0 w-full mb-5 group">
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    الجهة
+                  </label>
+                  <select
+                    name="region1"
+                    onChange={(value) => {
+                      setselectedRegion1({
+                        ...selectedRegion1,
+                        id: Number(value.target.value),
+                        name: value.target.value.toString(),
+                      });
+                    }}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option selected>
+                      {selectedValue.province?.region.name}
+                    </option>
+
+                    {regions1?.map((region) => (
+                      <option value={region.id}>{region.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="w-full">
+                <div className="relative z-0 w-full mb-5 group">
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    الإقليم
+                  </label>
+                  <select
+                    name="province1"
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        province:
+                          provinces1?.find(
+                            (item) => item.id === Number(e.target.value)
+                          ) || undefined,
+                      })
+                    }
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option selected>{selectedValue.province?.name}</option>
+
+                    {provinces1?.map((province) => (
+                      <option value={province.id}>{province.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="w-full">
+                <div className="relative z-0 w-full mb-5 group">
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    صنف المركز
+                  </label>
+                  <select
+                    name="centre"
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        centre:
+                          centre?.find(
+                            (item) => item.id === Number(e.target.value)
+                          ) || undefined,
+                      })
+                    }
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  >
+                    <option selected>{selectedValue.centre?.name}</option>
+
+                    {centre?.map((c: any) => (
+                      <option value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
