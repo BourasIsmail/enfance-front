@@ -18,8 +18,8 @@ import { useRouter } from "next/navigation";
 import { Beneficiaire } from "@/type/Beneficiaire";
 import { Region } from "@/type/Region";
 import { useQuery } from "react-query";
-import { getALLRegions } from "@/api/province";
-import { getProvinceByRegion } from "@/api/region";
+import { getALLRegions } from "@/api/region";
+import { getProvinceByRegion } from "@/api/province";
 import { getCentre } from "@/api/centre";
 
 const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {

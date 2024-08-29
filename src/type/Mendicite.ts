@@ -1,5 +1,5 @@
 export type Mendicite = {
-  id: number;
-  lieuMendicite: string;
-  personneExploitante: string;
+  id?: number;
+  lieuMendicite?: string;
+  personneExploitante?: string;
 };

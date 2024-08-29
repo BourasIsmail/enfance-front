@@ -19,7 +19,7 @@ import { useQuery } from "react-query";
 import { api, getUser } from "@/api";
 import { SideBar } from "@/components/SideBar";
 import { BreadCrumb } from "@/components/BreadCrumb";
-import { getAllProvinces } from "@/api/region";
+import { getAllProvinces } from "@/api/province";
 import { UserInfo } from "@/type/UserInfo";
 
 export default function Home({
@@ -28,7 +28,8 @@ export default function Home({
   params: {
     id: number;
   };
-}) {
+})
+ {
   const router = useRouter();
   const [selectedValue, setselectedValue] = useState<UserInfo>();
   const { data: user, isLoading } = useQuery({
@@ -40,7 +41,11 @@ export default function Home({
     },
   });
   const [open, setopen] = useState(false);
-  const handleSubmit = (e: any) => {
+  const getProvinces = async () => {
+    const response = await api.get('/province');  
+    return response.data;
+};
+  const handleSubmit = (e : any) => {
     try {
       e.preventDefault();
       console.log(selectedValue);
@@ -143,33 +148,108 @@ export default function Home({
                     />
                   </div>
                   <div className="w-full">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                      إقليم
-                    </label>
-                    <select
-                      name="province"
-                      onChange={(e) =>
-                        setselectedValue({
-                          ...selectedValue,
-                          province:
-                            provinces?.find(
-                              (item) => item.id === Number(e.target.value)
-                            ) || undefined,
-                        })
-                      }
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option
-                        selected
-                        value={selectedValue?.province?.id || ""}
-                      >
-                        {selectedValue?.province?.name}
-                      </option>
-                      {provinces?.map((pr) => (
-                        <option value={pr.id}>{pr.name}</option>
-                      ))}
-                    </select>
-                  </div>
+                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        الإقليم
+                                        </label>
+                                        <select
+                                        name="province"
+                                        value={selectedValue?.province?.id || ""}
+                                        onChange={(e) => setselectedValue({
+                                            ...selectedValue,
+                                            province: { 
+                                                id: parseInt(e.target.value), 
+                                                name: e.target.options[e.target.selectedIndex].text,
+                                                region: selectedValue?.province?.region || null,
+                                            },
+                                        })}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        required
+                                        >
+                                        <option value="" disabled>الإقليم</option>
+                                        <option value="9">أكادير</option>
+                                        <option value="6">عين السبع الحي المحمدي</option>
+                                        <option value="1">الحسيمة</option>
+                                        <option value="5">أزيلال</option>
+                                        <option value="6">بن مسيك سيدي عثمان</option>
+                                        <option value="5">بني ملال</option>
+                                        <option value="6">بنسليمان</option>
+                                        <option value="3">بولمان</option>
+                                        <option value="6">الدار البيضاء أنفا</option>
+                                        <option value="1">شفشاون</option>
+                                        <option value="7">شيشاوة</option>
+                                        <option value="12">الداخلة</option>
+                                        <option value="3">الحاجب</option>
+                                        <option value="7">الحوز</option>
+                                        <option value="6">الجديدة</option>
+                                        <option value="7">قلعة السراغنة</option>
+                                        <option value="8">الراشيدية</option>
+                                        <option value="7">الصويرة</option>
+                                        <option value="3">فاس</option>
+                                        <option value="2">فكيك</option>
+                                        <option value="10">كلميم</option>
+                                        <option value="3">إفران</option>
+                                        <option value="4">القنيطرة</option>
+                                        <option value="4">الخميسات</option>
+                                        <option value="5">خنيفرة</option>
+                                        <option value="5">خريبكة</option>
+                                        <option value="11">العيون</option>
+                                        <option value="1">العرائش</option>
+                                        <option value="7">مراكش</option>
+                                        <option value="3">مكناس</option>
+                                        <option value="6">المحمدية</option>
+                                        <option value="2">الناظور</option>
+                                        <option value="8">ورززات</option>
+                                        <option value="2">وجدة</option>
+                                        <option value="4">الرباط</option>
+                                        <option value="7">آسفي</option>
+                                        <option value="4">سلا</option>
+                                        <option value="6">سطات</option>
+                                        <option value="9">إنزكان أيت ملول</option>
+                                        <option value="4">سيدي قاسم</option>
+                                        <option value="10">طانطان</option>
+                                        <option value="1">طنجة</option>
+                                        <option value="3">تاونات</option>
+                                        <option value="9">تارودانت</option>
+                                        <option value="9">طاطا</option>
+                                        <option value="3">تازة</option>
+                                        <option value="4">تمارة</option>
+                                        <option value="1">تطوان</option>
+                                        <option value="9">تزنيت</option>
+                                        <option value="10">آسا الزاك</option>
+                                        <option value="11">السمارة</option>
+                                        <option value="11">بوجدور</option>
+                                        <option value="2">جرادة</option>
+                                        <option value="2">تاوريرت</option>
+                                        <option value="9">شتوكة أيت باها</option>
+                                        <option value="8">زاكورة</option>
+                                        <option value="1">الفحص أنجرة</option>
+                                        <option value="6">عين الشق</option>
+                                        <option value="3">مولاي يعقوب</option>
+                                        <option value="3">صفرو</option>
+                                        <option value="1">المضيق فنيدق</option>
+                                        <option value="2">بركان</option>
+                                        <option value="6">سيدي البرنوصي</option>
+                                        <option value="6">مديونة</option>
+                                        <option value="6">مولاي رشيد</option>
+                                        <option value="6">مرس السلطان</option>
+                                        <option value="6">الحي الحسني</option>
+                                        <option value="6">النواصر</option>
+                                        <option value="2">كرسيف</option>
+                                        <option value="12">أوسرد</option>
+                                        <option value="6">سيدي بنور</option>
+                                        <option value="7">الرحامنة</option>
+                                        <option value="4">سيدي سليمان</option>
+                                        <option value="8">ميدلت</option>
+                                        <option value="5">الفقيه بنصالح</option>
+                                        <option value="11">طرفاية</option>
+                                        <option value="2">الدريوش</option>
+                                        <option value="8">تنغير</option>
+                                        <option value="7">اليوسفية</option>
+                                        <option value="6">برشيد</option>
+                                        <option value="1">وزان</option>
+                                        <option value="10">سيدي إفني</option>
+                                        </select>
+                                    </div>
                   <div className="w-full">
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       نوع الحساب

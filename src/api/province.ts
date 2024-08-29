@@ -1,27 +1,36 @@
 import { api } from ".";
-import { Region } from "../type/Region";
+import { Province } from "../type/Province";
 
-export async function getRegions(page: number = 0): Promise<Region[]> {
+export async function getProvinces(page: number = 0): Promise<Province[]> {
   try {
-    const response = await api.get(`/region?page=${page}`);
+    const response = await api.get(`/province?page=${page}`);
     return response.data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function getRegion(id: number): Promise<Region> {
+export async function getProvince(id: number): Promise<Province> {
   try {
-    const response = await api.get(`/region/${id}`);
+    const response = await api.get(`/province/${id}`);
     return response.data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function getALLRegions(): Promise<Region[]> {
+export async function getAllProvinces(): Promise<Province[]> {
   try {
-    const response = await api.get(`/region/all`);
+    const response = await api.get(`/province/all`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getProvinceByRegion(id: number): Promise<Province[]> {
+  try {
+    const response = await api.get(`/province/region/${id}`);
     return response.data;
   } catch (error) {
     throw error;

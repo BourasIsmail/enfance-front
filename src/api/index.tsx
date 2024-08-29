@@ -37,20 +37,6 @@ client.interceptors.request.use(
 );
 export const api = client;
 
-export function getStagiaires() {
-  return async () => {
-    // TODO checks and params to all custom hooks
-
-    const token = getCookie("token");
-    console.log(token);
-    const { data } = await api.get("/stagiaire/all", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return data;
-  };
-}
 
 export function getUsers() {
   return async () => {
