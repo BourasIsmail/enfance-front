@@ -18,9 +18,9 @@ import { useRouter } from "next/navigation";
 import { Beneficiaire } from "@/type/Beneficiaire";
 import { Region } from "@/type/Region";
 import { useQuery } from "react-query";
+import { getCentre } from "@/api/centre";
 import { getALLRegions } from "@/api/region";
 import { getProvinceByRegion } from "@/api/province";
-import { getCentre } from "@/api/centre";
 
 const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
   const [selectedValue, setselectedValue] =
@@ -134,7 +134,7 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   >
                     <option selected>
-                      {selectedValue.province?.region.name}
+                      {selectedValue.province?.region?.name}
                     </option>
 
                     {regions1?.map((region) => (
@@ -197,19 +197,19 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  الإسم الشخصي باللغة الفرنسية
+                  الفئة العمرية
                 </label>
                 <input
                   type="text"
-                  name="prenomFr"
+                  name="groupeAge"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.prenomFr || ""}
-                  placeholder="الإسم الشخصي باللغة الفرنسية"
+                  value={selectedValue?.groupeAge || ""}
+                  placeholder="الفئة العمرية"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      prenomFr: e.target.value || "",
+                      groupeAge: e.target.value || "",
                     })
                   }
                   required
@@ -217,19 +217,20 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  العنوان الشخصي
+                  منقطع عن الدراسة/ غير منقطع عن الدراسة
                 </label>
                 <input
                   type="text"
-                  name="adresse"
+                  name="scolarite"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.adresse || ""}
-                  placeholder="العنوان الشخصي"
+                  value={selectedValue?.scolarite.toString()}
+                  placeholder="منقطع عن الدراسة/ غير منقطع عن الدراسة"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      adresse: e.target.value || "",
+                      scolarite:
+                        e.target.value.toString() === "true" ? true : false,
                     })
                   }
                   required
@@ -237,19 +238,19 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  تاريخ الازدياد
+                  المستوى الدراسي
                 </label>
                 <input
-                  type="date"
-                  name="dateNaissance"
+                  type="text"
+                  name="niveauScolaire"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.dateNaissance || ""}
-                  placeholder="تاريخ الازدياد"
+                  value={selectedValue?.niveauScolaire || ""}
+                  placeholder="المستوى الدراسي"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      dateNaissance: e.target.value || "",
+                      niveauScolaire: e.target.value || "",
                     })
                   }
                   required
@@ -257,19 +258,19 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  الحالة العائلية
+                  وسط الإقامة
                 </label>
                 <input
                   type="text"
-                  name="situationFamilial"
+                  name="sejour"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.situationFamilial || ""}
-                  placeholder="الحالة العائلية"
+                  value={selectedValue?.sejour || ""}
+                  placeholder="وسط الإقامة"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      situationFamilial: e.target.value || "",
+                      sejour: e.target.value || "",
                     })
                   }
                   required
@@ -277,19 +278,19 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
               </div>
               <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  رقم بطاقة الهوية الوطنية
+                  المجال الترابي
                 </label>
                 <input
                   type="text"
-                  name="cin"
+                  name="territoire"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.cin || ""}
-                  placeholder="رقم بطاقة الهوية الوطنية"
+                  value={selectedValue?.territoire || ""}
+                  placeholder="المجال الترابي"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      cin: e.target.value || "",
+                      territoire: e.target.value || "",
                     })
                   }
                   required
@@ -297,19 +298,21 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  البريد الإلكتروني
+                  وصف الحالة الاجتماعية (هام جدا)
                 </label>
                 <input
-                  type="email"
-                  name="email"
+                  type="situationSocial"
+                  name="text"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.email || ""}
-                  placeholder="البريد الإلكتروني"
+                  value={selectedValue?.situationSocial || ""}
+                  placeholder="وصف الحالة 
+الاجتماعية
+(هام جدا)"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      email: e.target.value || "",
+                      situationSocial: e.target.value || "",
                     })
                   }
                   required
@@ -357,26 +360,6 @@ const Personnel = ({ beneficiaires }: { beneficiaires: Beneficiaire }) => {
                     أنثى
                   </label>
                 </div>
-              </div>
-              <div className="w-full">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  رقم الهاتف
-                </label>
-                <input
-                  type="tel"
-                  name="telephone"
-                  id=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.telephone || ""}
-                  placeholder="رقم الهاتف"
-                  onChange={(e) =>
-                    setselectedValue({
-                      ...selectedValue,
-                      telephone: e.target.value || "",
-                    })
-                  }
-                  required
-                />
               </div>
             </div>
             <div className="flex justify-start items-end gap-3">

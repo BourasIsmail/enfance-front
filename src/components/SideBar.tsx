@@ -84,33 +84,34 @@ export function SideBar() {
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <IoDocumentTextSharp width={200} height={200} />
-                <span className="flex-1 ms-3 whitespace-nowrap">
-                  كُتَيّب
-                </span>
+                <span className="flex-1 ms-3 whitespace-nowrap">وثائق</span>
               </Link>
             </li>
             {user?.roles === "ADMIN_ROLES" && (
-              <><li>
-                <Link
-                  href="/comptes"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                >
-                  <FaUserTie width={200} height={200} />
-                  <span className="flex-1 ms-3 whitespace-nowrap">
-                    لائحة الحسابات
-                  </span>
-                </Link>
-              </li><li>
+              <>
+                <li>
+                  <Link
+                    href="/comptes"
+                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                  >
+                    <FaUserTie width={200} height={200} />
+                    <span className="flex-1 ms-3 whitespace-nowrap">
+                      لائحة الحسابات
+                    </span>
+                  </Link>
+                </li>
+                <li>
                   <Link
                     href="/statistique"
                     className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                   >
                     <FaUserTie width={200} height={200} />
                     <span className="flex-1 ms-3 whitespace-nowrap">
-                    إحصائيات المستخدمين
+                      إحصائيات المستخدمين
                     </span>
                   </Link>
-                </li></>
+                </li>
+              </>
             )}
 
             <li onClick={logout}>

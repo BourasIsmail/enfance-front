@@ -37,7 +37,6 @@ client.interceptors.request.use(
 );
 export const api = client;
 
-
 export function getUsers() {
   return async () => {
     const token = getCookie("token");

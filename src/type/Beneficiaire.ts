@@ -19,7 +19,7 @@ export type Beneficiaire = {
   prenom?: string;
   sexe?: string;
   groupeAge?: string;
-  scolarite?: boolean;
+  scolarite: boolean;
   niveauScolaire?: string;
   sejour?: string;
   territoire?: string;
@@ -35,10 +35,8 @@ export type Beneficiaire = {
   situationFinanciere?: SituationFinanciere;
   situationMedical?: SituationMedical;
   violance?: Violance;
-  hasViolence?: boolean; 
+  hasViolence?: boolean;
   region?: Region;
-  hasSituationDeRue?: boolean; 
+  hasSituationDeRue?: boolean;
   hasMendicite?: boolean;
-
-
 };
