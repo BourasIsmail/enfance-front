@@ -55,8 +55,89 @@ export default function AddBeneficiary() {
     queryKey: ["centre"],
     queryFn: () => getCentre(),
   });
+  const router = useRouter();
 
-  function handleSubmit() {
+  function handleSubmit(e: any) {
+    try {
+      e.preventDefault();
+      console.log(selectedValue);
+      if (selectedValue?.situationMedical?.choix !== "أخرى") {
+        if (selectedValue?.situationMedical) {
+          selectedValue.situationMedical.autre = "";
+        }
+      }
+      if (selectedValue?.classificationCas?.choix !== "آخر مع التحديد") {
+        if (selectedValue?.classificationCas) {
+          selectedValue.classificationCas.autre = "";
+        }
+      }
+      if (selectedValue?.handicap?.choix !== "آخر مع التحديد") {
+        if (selectedValue?.handicap) {
+          selectedValue.handicap.autre = "";
+        }
+      }
+      if (violence === false) {
+        if (selectedValue?.violence) {
+          selectedValue.violence.descViolance = "pas de violence";
+        }
+      }
+      if (rue === false) {
+        if (selectedValue?.situationDeRue) {
+          selectedValue.situationDeRue.raisonSortieRue = "pas de cas";
+        }
+      }
+      if (mendicite === false) {
+        if (selectedValue?.mendicite) {
+          selectedValue.mendicite.lieuMendicite = "pas de mendicite";
+        }
+      }
+      if (
+        selectedValue?.services?.entiteRefere !==
+          "آخر (مع التحديد في خانة الإضافات)" &&
+        selectedValue?.services?.entiteRefere !== "القضاء مع التحديد"
+      ) {
+        if (selectedValue?.services) {
+          selectedValue.services.autreRefere = "";
+        }
+      }
+      if (
+        selectedValue?.services?.entiteReferente !==
+        "آخر (مع التحديد في خانة الإضافات)"
+      ) {
+        if (selectedValue?.services) {
+          selectedValue.services.autreReferente = "";
+        }
+      }
+      if (selectedValue?.services?.etat !== "مغلق") {
+        if (selectedValue?.services) {
+          selectedValue.services.detailEtatFerme = "";
+        }
+      }
+      if (selectedValue?.scolarite !== "غير منقطع عن الدراسة") {
+        if (selectedValue?.niveauScolaire) {
+          selectedValue.niveauScolaire = "";
+        }
+      }
+      const response = api
+        .post(`beneficiaires/add`, selectedValue)
+        .then((res) => {
+          console.log(response);
+        });
+      toast({
+        description: "تم تحديث البيانات بنجاح",
+        className: "bg-green-500 text-white",
+        duration: 3000,
+        title: "نجاح",
+      });
+      //router.push("/beneficiaires");
+    } catch (error) {
+      toast({
+        description: "اسم مستخدم أو كلمة مرور غير صحيحة",
+        variant: "destructive",
+        duration: 3000,
+        title: "خطأ",
+      });
+    }
     console.log(selectedValue);
   }
 
@@ -358,6 +439,7 @@ export default function AddBeneficiary() {
                         setselectedValue({
                           ...selectedValue,
                           situationMedical: {
+                            ...selectedValue?.situationMedical,
                             choix: e.target.value || "",
                           },
                         });
@@ -408,6 +490,7 @@ export default function AddBeneficiary() {
                         setselectedValue({
                           ...selectedValue,
                           situationFamilial: {
+                            ...selectedValue?.situationFamilial,
                             choix: e.target.value || "",
                           },
                         });
@@ -458,6 +541,7 @@ export default function AddBeneficiary() {
                         setselectedValue({
                           ...selectedValue,
                           situationFinanciere: {
+                            ...selectedValue?.situationFinanciere,
                             choix: e.target.value || "",
                           },
                         });
@@ -484,6 +568,7 @@ export default function AddBeneficiary() {
                         setselectedValue({
                           ...selectedValue,
                           classificationCas: {
+                            ...selectedValue?.classificationCas,
                             choix: e.target.value || "",
                           },
                         });
@@ -528,12 +613,12 @@ export default function AddBeneficiary() {
                           setselectedValue({
                             ...selectedValue,
                             classificationCas: {
+                              ...selectedValue.classificationCas,
                               autre: e.target.value || "",
                             },
                           })
                         }
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        required
                       />
                     </div>
                   )}
@@ -548,6 +633,7 @@ export default function AddBeneficiary() {
                         setselectedValue({
                           ...selectedValue,
                           handicap: {
+                            ...selectedValue?.handicap,
                             choix: e.target.value || "",
                           },
                         });
@@ -579,6 +665,7 @@ export default function AddBeneficiary() {
                           setselectedValue({
                             ...selectedValue,
                             handicap: {
+                              ...selectedValue.handicap,
                               autre: e.target.value || "",
                             },
                           })
@@ -608,11 +695,12 @@ export default function AddBeneficiary() {
                         </label>
                         <select
                           name="violance"
-                          value={selectedValue?.violance?.descViolance || ""}
+                          value={selectedValue?.violence?.descViolance || ""}
                           onChange={(e) => {
                             setselectedValue({
                               ...selectedValue,
-                              violance: {
+                              violence: {
+                                ...selectedValue?.violence,
                                 descViolance: e.target.value || "",
                               },
                             });
@@ -640,11 +728,12 @@ export default function AddBeneficiary() {
                         </label>
                         <select
                           name="agresseur"
-                          value={selectedValue?.violance?.agresseur || ""}
+                          value={selectedValue?.violence?.agresseur || ""}
                           onChange={(e) =>
                             setselectedValue({
                               ...selectedValue,
-                              violance: {
+                              violence: {
+                                ...selectedValue?.violence,
                                 agresseur: e.target.value,
                               },
                             })
@@ -671,11 +760,12 @@ export default function AddBeneficiary() {
                         <input
                           type="text"
                           name="lieuViolance"
-                          value={selectedValue?.violance?.lieuViolance || ""}
+                          value={selectedValue?.violence?.lieuViolance || ""}
                           onChange={(e) =>
                             setselectedValue({
                               ...selectedValue,
-                              violance: {
+                              violence: {
+                                ...selectedValue?.violence,
                                 lieuViolance: e.target.value,
                               },
                             })
@@ -713,6 +803,7 @@ export default function AddBeneficiary() {
                             setselectedValue({
                               ...selectedValue,
                               situationDeRue: {
+                                ...selectedValue?.situationDeRue,
                                 raisonSortieRue: e.target.value,
                               },
                             })
@@ -752,6 +843,7 @@ export default function AddBeneficiary() {
                             setselectedValue({
                               ...selectedValue,
                               situationDeRue: {
+                                ...selectedValue?.situationDeRue,
                                 origineEnfant: e.target.value,
                               },
                             })
@@ -774,6 +866,7 @@ export default function AddBeneficiary() {
                             setselectedValue({
                               ...selectedValue,
                               situationDeRue: {
+                                ...selectedValue?.situationDeRue,
                                 durreDansRue: e.target.value,
                               },
                             })
@@ -813,6 +906,7 @@ export default function AddBeneficiary() {
                               setselectedValue({
                                 ...selectedValue,
                                 situationDeRue: {
+                                  ...selectedValue.situationDeRue,
                                   autreDuree: e.target.value || "",
                                 },
                               })
@@ -836,6 +930,7 @@ export default function AddBeneficiary() {
                             setselectedValue({
                               ...selectedValue,
                               situationDeRue: {
+                                ...selectedValue?.situationDeRue,
                                 frequenceRue: e.target.value,
                               },
                             })
@@ -878,6 +973,7 @@ export default function AddBeneficiary() {
                             setselectedValue({
                               ...selectedValue,
                               mendicite: {
+                                ...selectedValue?.mendicite,
                                 lieuMendicite: e.target.value,
                               },
                             })
@@ -901,6 +997,7 @@ export default function AddBeneficiary() {
                             setselectedValue({
                               ...selectedValue,
                               mendicite: {
+                                ...selectedValue?.mendicite,
                                 personneExploitante: e.target.value,
                               },
                             })
@@ -916,12 +1013,13 @@ export default function AddBeneficiary() {
                       اسم الخدمة
                     </label>
                     <select
-                      name="serviceName"
-                      value={selectedValue?.service?.serviceName || ""}
+                      name="servicesName"
+                      value={selectedValue?.services?.serviceName || ""}
                       onChange={(e) => {
                         setselectedValue({
                           ...selectedValue,
-                          service: {
+                          services: {
+                            ...selectedValue?.services,
                             serviceName: e.target.value,
                           },
                         });
@@ -955,11 +1053,12 @@ export default function AddBeneficiary() {
                     <input
                       type="text"
                       name="serviceDescription"
-                      value={selectedValue?.service?.serviceDescription || ""}
+                      value={selectedValue?.services?.serviceDescription || ""}
                       onChange={(e) =>
                         setselectedValue({
                           ...selectedValue,
-                          service: {
+                          services: {
+                            ...selectedValue?.services,
                             serviceDescription: e.target.value,
                           },
                         })
@@ -974,11 +1073,12 @@ export default function AddBeneficiary() {
                     </label>
                     <select
                       name="entiteReferente"
-                      value={selectedValue?.service?.entiteReferente || ""}
+                      value={selectedValue?.services?.entiteReferente || ""}
                       onChange={(e) => {
                         setselectedValue({
                           ...selectedValue,
-                          service: {
+                          services: {
+                            ...selectedValue?.services,
                             entiteReferente: e.target.value,
                           },
                         });
@@ -1009,7 +1109,7 @@ export default function AddBeneficiary() {
                       </option>
                     </select>
                   </div>
-                  {selectedValue?.service?.entiteReferente ===
+                  {selectedValue?.services?.entiteReferente ===
                     "آخر (مع التحديد في خانة الإضافات)" && (
                     <div className="w-full">
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -1018,11 +1118,12 @@ export default function AddBeneficiary() {
                       <input
                         type="text"
                         name="autreEntiteReferente"
-                        value={selectedValue?.service?.autreReferente || ""}
+                        value={selectedValue?.services?.autreReferente || ""}
                         onChange={(e) =>
                           setselectedValue({
                             ...selectedValue,
-                            service: {
+                            services: {
+                              ...selectedValue?.services,
                               autreReferente: e.target.value,
                             },
                           })
@@ -1038,11 +1139,12 @@ export default function AddBeneficiary() {
                     </label>
                     <select
                       name="entiteRefere"
-                      value={selectedValue?.service?.entiteRefere || ""}
+                      value={selectedValue?.services?.entiteRefere || ""}
                       onChange={(e) => {
                         setselectedValue({
                           ...selectedValue,
-                          service: {
+                          services: {
+                            ...selectedValue?.services,
                             entiteRefere: e.target.value,
                           },
                         });
@@ -1076,9 +1178,9 @@ export default function AddBeneficiary() {
                       </option>
                     </select>
                   </div>
-                  {(selectedValue?.service?.entiteRefere ===
+                  {(selectedValue?.services?.entiteRefere ===
                     "القضاء مع التحديد" ||
-                    selectedValue?.service?.entiteRefere ===
+                    selectedValue?.services?.entiteRefere ===
                       "آخر (مع التحديد في خانة الإضافات)") && (
                     <div className="w-full">
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -1087,11 +1189,12 @@ export default function AddBeneficiary() {
                       <input
                         type="text"
                         name="autreEntiteRefere"
-                        value={selectedValue?.service?.autreRefere || ""}
+                        value={selectedValue?.services?.autreRefere || ""}
                         onChange={(e) =>
                           setselectedValue({
                             ...selectedValue,
-                            service: {
+                            services: {
+                              ...selectedValue?.services,
                               autreRefere: e.target.value,
                             },
                           })
@@ -1107,11 +1210,12 @@ export default function AddBeneficiary() {
                     </label>
                     <select
                       name="etat"
-                      value={selectedValue?.service?.etat || ""}
+                      value={selectedValue?.services?.etat || ""}
                       onChange={(e) => {
                         setselectedValue({
                           ...selectedValue,
-                          service: {
+                          services: {
+                            ...selectedValue?.services,
                             etat: e.target.value,
                           },
                         });
@@ -1127,7 +1231,7 @@ export default function AddBeneficiary() {
                       <option value="ملف مغلق">ملف مغلق</option>
                     </select>
                   </div>
-                  {selectedValue?.service?.etat === "ملف مغلق" && (
+                  {selectedValue?.services?.etat === "ملف مغلق" && (
                     <div className="w-full">
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         المرجو تحديد إذا ما تم إنجاز الخدمة ام تعذر ذلك مع توضيح
@@ -1136,11 +1240,12 @@ export default function AddBeneficiary() {
                       <input
                         type="text"
                         name="detailEtatFerme"
-                        value={selectedValue?.service?.detailEtatFerme || ""}
+                        value={selectedValue?.services?.detailEtatFerme || ""}
                         onChange={(e) =>
                           setselectedValue({
                             ...selectedValue,
-                            service: {
+                            services: {
+                              ...selectedValue?.services,
                               detailEtatFerme: e.target.value,
                             },
                           })

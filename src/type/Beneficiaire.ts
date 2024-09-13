@@ -27,11 +27,11 @@ export type Beneficiaire = {
   classificationCas?: ClassificationCas;
   handicap?: Handicap;
   mendicite?: Mendicite;
-  service?: Services;
+  services?: Services;
   situationDeRue?: SituationDeRue;
   situationFamilial?: SituationFamilial;
   situationFinanciere?: SituationFinanciere;
   situationMedical?: SituationMedical;
-  violance?: Violance;
+  violence?: Violance;
   region?: Region;
 };
