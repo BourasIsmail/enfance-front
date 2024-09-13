@@ -1,5 +1,5 @@
 export type ClassificationCas = {
-  id: number;
+  id?: number;
   choix?: string;
   autre?: string;
 };

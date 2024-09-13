@@ -2,6 +2,7 @@ export type SituationDeRue = {
   id?: number;
   raisonSortieRue?: string;
   origineEnfant?: string;
-  durreDansRue?: number;
+  durreDansRue?: string;
+  autreDuree?: string;
   frequenceRue?: string;
 };

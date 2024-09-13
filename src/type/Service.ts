@@ -1,12 +1,11 @@
-export type Service = {
-  id: number;
-  serviceName: string;
+export type Services = {
+  id?: number;
+  serviceName?: string;
   serviceDescription?: string;
   entiteReferente?: string;
   entiteRefere?: string;
   etat?: string;
-  etatDetails?: string;
-  autreServiceName?: string;
-  autreEntiteReferente?: string;
-  autreEntiteRefere?: string;
+  autreRefere?: string;
+  autreReferente?: string;
+  detailEtatFerme?: string;
 };
