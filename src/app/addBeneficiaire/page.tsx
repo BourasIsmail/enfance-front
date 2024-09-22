@@ -129,7 +129,7 @@ export default function AddBeneficiary() {
         duration: 3000,
         title: "نجاح",
       });
-      //router.push("/beneficiaires");
+      router.push("/beneficiaires");
     } catch (error) {
       toast({
         description: "اسم مستخدم أو كلمة مرور غير صحيحة",
@@ -1008,6 +1008,7 @@ export default function AddBeneficiary() {
                       </div>
                     </>
                   )}
+                  
                   <div className="w-full">
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                       اسم الخدمة

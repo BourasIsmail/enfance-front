@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -42,6 +42,18 @@ export const columns: ColumnDef<Beneficiaire>[] = [
       <DataTableColumnHeader column={column} title="الجهة" />
     ),
   },
+  {
+    accessorKey: "sexe",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="الجنس" />
+    ),
+  },
+  {
+    accessorKey: "groupeAge",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="الفئة العمرية" />
+    ),
+  },
 
   {
     id: "actions",
@@ -49,26 +61,51 @@ export const columns: ColumnDef<Beneficiaire>[] = [
       const benef = row.original;
       const queryClient = useQueryClient();
 
-      const [open, setopen] = useState(false);
+      const handleDelete = async () => {
+        const confirmed = window.confirm("هل أنت متأكد من حذف هذا المستفيد؟");
+        if (confirmed && benef.id) {
+          try {
+            await deleteBeneficiaire(benef.id);
+            queryClient.invalidateQueries('beneficiaires');
+          } catch (error) {
+            console.error(error);
+            alert("Erreur lors de la suppression du bénéficiaire");
+          }
+        }
+      };
 
       return (
-        <>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="text-right" align="end">
-              <DropdownMenuLabel>الوظائف</DropdownMenuLabel>
-              <Link href={benef.id ? `/beneficiaires/${benef.id}` : `#`}>
-                <DropdownMenuItem>تفاصيل المستفيد</DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <span className="sr-only">Open menu</span>
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="text-right" align="end">
+            <DropdownMenuLabel>الوظائف</DropdownMenuLabel>
+            <Link href={benef.id ? `/beneficiaires/${benef.id}` : `#`}>
+              <DropdownMenuItem>تفاصيل المستفيد</DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleDelete} className="text-red-600">
+              حذف المستفيد
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },
 ];
+
+const deleteBeneficiaire = async (id: number) => {
+  const response = await fetch(`/api/beneficiaires/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    const errorMessage = await response.text(); // Récupérer le message d'erreur
+    console.error("Erreur de l'API:", errorMessage); // Afficher l'erreur dans la console
+    throw new Error('Erreur lors de la suppression du bénéficiaire');
+  }
+};

@@ -11,17 +11,21 @@ const client = axios.create({
 
 client.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response.status === 401) {
-      console.log("error 401");
+    (error) => {
+      if (error.response) {
+        // Vérifiez si error.response est défini
+        if (error.response.status === 401) {
+          console.log("error 401");
+        }
+        if (error.response.status === 403) {
+          console.log("error 403");
+        }
+      } else {
+        // Traitez les erreurs qui n'ont pas de réponse
+        console.error("Erreur de réseau ou erreur inattendue", error);
+      }
     }
-    if (error.response.status === 403) {
-      console.log("error 403");
-      deleteCookie("token");
-      window.location.href = "/login";
-    }
-    return Promise.reject(error);
-  }
+
 );
 client.interceptors.request.use(
   (config) => {

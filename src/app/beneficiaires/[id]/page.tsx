@@ -19,7 +19,6 @@ import { useQuery } from "react-query";
 import { api, getUser } from "@/api";
 import { SideBar } from "@/components/SideBar";
 import { BreadCrumb } from "@/components/BreadCrumb";
-import { getAllProvinces } from "@/api/region";
 import { Beneficiaire } from "@/type/Beneficiaire";
 import { getBeneficiaire } from "@/api/beneficiaire";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -53,15 +52,7 @@ export default function Home({
         <BreadCrumb />
         <h1 className="text-2xl font-bold mb-4 py-2">تفاصيل الطلب</h1>
         <Tabs dir="rtl" defaultValue="personel" className="px-2">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="personel">المعطيات الشخصية للمتدرب</TabsTrigger>
-            <TabsTrigger value="academic">المعطيات الأكاديمية</TabsTrigger>
-            <TabsTrigger value="formation">
-              المعطيات الخاصة بالتدريب
-            </TabsTrigger>
-            <TabsTrigger value="file">المرفقات</TabsTrigger>
-          </TabsList>
-          <TabsContent value="personel">
+                   <TabsContent value="personel">
             {benef && <Personnel beneficiaires={benef} />}
           </TabsContent>
           <TabsContent value="academic"></TabsContent>
