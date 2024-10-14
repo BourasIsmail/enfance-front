@@ -17,7 +17,6 @@ export default function Home() {
     <>
       <SideBar />
       <main className="p-4 sm:mr-60">
-        <BreadCrumb />
         <Link href={"addCompte"}>
           <button
             type="button"

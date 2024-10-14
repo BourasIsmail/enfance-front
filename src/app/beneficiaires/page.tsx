@@ -45,7 +45,7 @@ export default function Home() {
             إضافة المستفيدين +
           </button>
         </Link>
-        <h1 className="text-2xl font-bold mb-4 py-2">لائحة المستفيدين</h1>
+        <h1 className="text-2xl font-bold mb-4 py-2">المستفيدين</h1>
 
         <div className="p-2 border-2 border-gray-200 rounded-lg dark:border-gray-700">
           <DataTable columns={columns} data={beneficiaires || []} />
